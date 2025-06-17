@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KDesk - Gestão de Projetos de Arquitetura</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <h1>KDesk 🏗️</h1>
+
+  <section>
+    <h2>Cadastro de Cliente</h2>
+    <form id="formCliente">
+      <input type="text" placeholder="Nome do Cliente" id="nomeCliente" required />
+      <input type="text" placeholder="Telefone / WhatsApp" id="telefoneCliente" />
+      <input type="email" placeholder="E-mail" id="emailCliente" />
+      <textarea placeholder="Observações" id="obsCliente"></textarea>
+      <button type="submit">Salvar Cliente</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Cadastro de Projeto</h2>
+    <form id="formProjeto">
+      <input type="text" placeholder="Nome do Projeto" id="nomeProjeto" required />
+      <input type="date" id="dataInicio" />
+      <input type="date" id="dataFim" />
+      <input type="text" placeholder="Prazo estimado" id="prazo" />
+      <input type="number" placeholder="Valor total" id="valorTotal" />
+      <input type="number" placeholder="Valor pago" id="valorPago" />
+      <input type="text" placeholder="Forma de pagamento" id="formaPagamento" />
+      <textarea placeholder="Entregáveis / Observações" id="obsProjeto"></textarea>
+      <button type="submit">Salvar Projeto</button>
+    </form>
+  </section>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
