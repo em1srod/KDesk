@@ -42,11 +42,12 @@ function login() {
   userEmail = email;
   document.getElementById("loginSection").style.display = "none";
   document.getElementById("navbar").style.display = "block";
-  mostrarSecao("panorama");
+
   listarClientes();
   listarProjetos();
   atualizarDashboard();
 
+  mostrarSecao("panorama");
 }
 
 function logout() {
@@ -178,8 +179,20 @@ function abrirModalProjeto() {
   document.getElementById("projetoValor").value = "";
   document.getElementById("projetoPago").value = "";
   document.getElementById("projetoObs").value = "";
+
+  const clientes = JSON.parse(localStorage.getItem(keyClientes())) || [];
+  const select = document.getElementById("projetoCliente");
+  select.innerHTML = '<option value="">Selecione um cliente</option>';
+  clientes.forEach(c => {
+    const option = document.createElement("option");
+    option.value = c.nome;
+    option.textContent = c.nome;
+    select.appendChild(option);
+  });
+
   document.getElementById("projetoModal").style.display = "flex";
 }
+
 
 function salvarProjeto() {
   const nome = document.getElementById("projetoNome").value;
@@ -188,9 +201,10 @@ function salvarProjeto() {
   const pago = parseFloat(document.getElementById("projetoPago").value);
   const obs = document.getElementById("projetoObs").value;
   const restante = valor - pago;
+  const cliente = document.getElementById("projetoCliente").value;
 
   const projetos = JSON.parse(localStorage.getItem(keyProjetos())) || [];
-  const projeto = { nome, prazo, valor, pago, restante, obs };
+  const projeto = { nome, prazo, valor, pago, restante, obs, cliente };
 
   if (indexEditandoProjeto !== null) {
     projetos[indexEditandoProjeto] = projeto;
@@ -214,6 +228,8 @@ function editarProjeto(index) {
   document.getElementById("projetoPago").value = p.pago;
   document.getElementById("projetoObs").value = p.obs;
   document.getElementById("projetoModal").style.display = "flex";
+  document.getElementById("projetoCliente").value = p.cliente || "";
+
 }
 
 function excluirProjeto(index) {
@@ -230,16 +246,18 @@ function listarProjetos() {
   const projetos = JSON.parse(localStorage.getItem(keyProjetos())) || [];
   lista.innerHTML = "";
 
-  if (projetos.length === 0) {
-    lista.innerHTML = "<p>Nenhum projeto cadastrado.</p>";
-    return;
-  }
+if (projetos.length === 0) {
+  lista.innerHTML = "<p>Nenhum projeto cadastrado.</p>";
+  return;
+}
+
 
   projetos.forEach((p, index) => {
     const div = document.createElement("div");
     div.className = "cliente-card";
     div.innerHTML = `
       <strong>${p.nome}</strong><br/>
+      📁 Cliente: ${p.cliente || "-"}<br/>
       📅 Prazo: ${p.prazo || "-"}<br/>
       💰 Total: R$ ${p.valor || 0} | Pago: R$ ${p.pago || 0} | Restante: R$ ${p.restante || 0}<br/>
       📝 ${p.obs || "-"}<br/>
