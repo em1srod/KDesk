@@ -1,4 +1,4 @@
-<!-- Estrutura inicial SPA com login -->
+<!-- Estrutura SPA com login e cadastro -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,15 +8,26 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- Tela de Login -->
-  <section id="loginSection">
-    <h1>KDesk Login</h1>
-    <input type="email" id="email" placeholder="Digite seu e-mail" required />
-    <input type="password" id="senha" placeholder="Digite sua senha" required />
-    <button onclick="login()">Entrar</button>
+  <!-- Tela de Cadastro -->
+  <section id="cadastroSection" class="pagina">
+    <h1>Cadastro - KDesk</h1>
+    <input type="text" id="nomeCadastro" class="input-full" placeholder="Nome completo" required />
+    <input type="email" id="emailCadastro" class="input-full" placeholder="E-mail" required />
+    <input type="password" id="senhaCadastro" class="input-full" placeholder="Senha" required />
+    <button onclick="cadastrarUsuario()">Cadastrar</button>
+    <p>Já tem conta? <a href="#" onclick="mostrarLogin()">Entrar</a></p>
   </section>
 
-  <!-- Navbar (visível após login) -->
+  <!-- Tela de Login -->
+  <section id="loginSection" class="pagina" style="display:none;">
+    <h1>Login - KDesk</h1>
+    <input type="email" id="emailLogin" class="input-full" placeholder="E-mail" required />
+    <input type="password" id="senhaLogin" class="input-full" placeholder="Senha" required />
+    <button onclick="login()">Entrar</button>
+    <p>Não tem conta? <a href="#" onclick="mostrarCadastro()">Cadastre-se</a></p>
+  </section>
+
+  <!-- Navbar -->
   <nav id="navbar" style="display:none;">
     <button onclick="mostrarSecao('panorama')">Panorama</button>
     <button onclick="mostrarSecao('clientes')">Clientes</button>
@@ -32,68 +43,57 @@
 
   <section id="clientes" class="pagina" style="display:none;">
     <h2>Clientes</h2>
-    <button onclick="novoCliente()">Novo Cliente</button>
+    <button onclick="abrirModalCliente()">Novo Cliente</button>
     <button onclick="exportarClientesPDF()">Exportar PDF</button>
     <div id="listaClientes"></div>
   </section>
 
   <section id="projetos" class="pagina" style="display:none;">
     <h2>Projetos</h2>
-    <button onclick="novoProjeto()">Novo Projeto</button>
+    <button onclick="abrirModalProjeto()">Novo Projeto</button>
     <button onclick="exportarProjetosPDF()">Exportar PDF</button>
     <div id="listaProjetos"></div>
   </section>
 
-  <!-- Scripts básicos -->
   <script>
-    function login() {
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
-      if (email.trim() !== "" && senha.trim() !== "") {
-        document.getElementById("loginSection").style.display = "none";
-        document.getElementById("navbar").style.display = "block";
-        mostrarSecao("panorama");
-      } else {
-        alert("Por favor, preencha e-mail e senha.");
-      }
+    function mostrarCadastro() {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("cadastroSection").style.display = "block";
     }
 
-    function logout() {
-      document.getElementById("navbar").style.display = "none";
-      document.querySelectorAll(".pagina").forEach(secao => secao.style.display = "none");
+    function mostrarLogin() {
+      document.getElementById("cadastroSection").style.display = "none";
       document.getElementById("loginSection").style.display = "block";
-    }
-
-    function mostrarSecao(id) {
-      document.querySelectorAll(".pagina").forEach(secao => secao.style.display = "none");
-      document.getElementById(id).style.display = "block";
     }
   </script>
 
-  <!-- Scripts externos -->
   <script src="js/kdesk.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Modal de Cliente -->
+  <!-- Modal Cliente -->
 <div id="clienteModal" class="modal" style="display:none;">
   <div class="modal-content">
-    <h3 id="modalTitulo">Novo Cliente</h3>
-    <input type="text" id="clienteNome" placeholder="Nome completo" required />
-    <input type="text" id="clienteTelefone" placeholder="Telefone" />
-    <input type="email" id="clienteEmail" placeholder="E-mail" />
-    <textarea id="clienteObservacoes" placeholder="Observações"></textarea>
+    <h2>Novo Cliente</h2>
+    <input type="text" id="clienteNome" placeholder="Nome" class="input-full" />
+    <input type="text" id="clienteTelefone" placeholder="Telefone" class="input-full" />
+    <input type="email" id="clienteEmail" placeholder="E-mail" class="input-full" />
+    <textarea id="clienteObservacoes" placeholder="Observações" class="input-full"></textarea>
     <button onclick="salvarCliente()">Salvar</button>
     <button onclick="fecharModal()">Cancelar</button>
   </div>
 </div>
-<!-- Modal de Projeto -->
+
+<!-- Modal Projeto -->
 <div id="projetoModal" class="modal" style="display:none;">
   <div class="modal-content">
-    <h3 id="modalTituloProjeto">Novo Projeto</h3>
-    <input type="text" id="projetoNome" placeholder="Nome do projeto" required />
-    <input type="text" id="projetoCliente" placeholder="Cliente" />
-    <textarea id="projetoDescricao" placeholder="Descrição"></textarea>
+    <h2>Novo Projeto</h2>
+    <input type="text" id="projetoNome" placeholder="Nome do Projeto" class="input-full" />
+    <input type="text" id="projetoPrazo" placeholder="Prazo (ex: 30 dias)" class="input-full" />
+    <input type="number" id="projetoValor" placeholder="Valor Total (R$)" class="input-full" />
+    <input type="number" id="projetoPago" placeholder="Valor Pago (R$)" class="input-full" />
+    <textarea id="projetoObs" placeholder="Observações" class="input-full"></textarea>
     <button onclick="salvarProjeto()">Salvar</button>
     <button onclick="fecharModal()">Cancelar</button>
   </div>
+</div>
 </body>
 </html>
